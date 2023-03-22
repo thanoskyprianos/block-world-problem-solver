@@ -1,5 +1,7 @@
-
-#include <stdio.h>
+#ifndef STDIO_H
+# define STDIO_H
+# include <stdio.h>
+#endif
 #include <string.h>
 #include <stdlib.h>
 
@@ -103,36 +105,36 @@ int start_goal(FILE *fptr, int block_count, blocks start, blocks goal){
   if(!read_state(fptr, block_count, goal)) return 0;
 }
 
-int main(){
+// int main(){
 
-  FILE *fptr = fopen("input.txt", "r");
-  if(fptr == NULL){
-    fprintf(stderr, "Input error\n");
-    return 1;
-  }
+//   FILE *fptr = fopen("input.txt", "r");
+//   if(fptr == NULL){
+//     fprintf(stderr, "Input error\n");
+//     return 1;
+//   }
 
-  int block_count;
-  if(fscanf(fptr, "%d", &block_count) != 1){
-    fprintf(stderr, "Formating error. Can't read block count.\n");
-    return 1;
-  }
+//   int block_count;
+//   if(fscanf(fptr, "%d", &block_count) != 1){
+//     fprintf(stderr, "Formating error. Can't read block count.\n");
+//     return 1;
+//   }
 
-  blocks start = initialize_state(block_count);
-  blocks goal = initialize_state(block_count);
-  if(!start_goal(fptr, block_count, start, goal)){
-    fprintf(stderr, "Formating error. Can't read start or goal state.\n");
-    free_state(start); free_state(goal);
-    return 1;
-  }
+//   blocks start = initialize_state(block_count);
+//   blocks goal = initialize_state(block_count);
+//   if(!start_goal(fptr, block_count, start, goal)){
+//     fprintf(stderr, "Formating error. Can't read start or goal state.\n");
+//     free_state(start); free_state(goal);
+//     return 1;
+//   }
 
 
-  printf("Start:\n");
-  print_blocks(start);
-  printf("Goal:\n");
-  print_blocks(goal);
+//   printf("Start:\n");
+//   print_blocks(start);
+//   printf("Goal:\n");
+//   print_blocks(goal);
 
-  free_state(start); free_state(goal);
+//   free_state(start); free_state(goal);
 
-  fclose(fptr);
-  return 0;
-}
+//   fclose(fptr);
+//   return 0;
+// }
