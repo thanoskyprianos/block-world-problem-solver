@@ -97,36 +97,47 @@ int read_state(FILE *fptr, int block_count, blocks state){
 
     add_block_state(name, on, state);
   }
+  return 1;
 }
 
-int start_goal(FILE *fptr, int block_count, blocks start, blocks goal){
-  if(!read_state(fptr, block_count, start)) return 0;
+int start_goal(blocks *start, blocks *goal){
+  FILE *fptr = fopen("input.txt", "r");
+  if(fptr == NULL){
+    fprintf(stderr, "Input error\n");
+    return 0;
+  }
+
+  int block_count;
+  if(fscanf(fptr, "%d", &block_count) != 1 || block_count <= 0){
+    fprintf(stderr, "Formating error. Can't read block count.\n");
+    return 0;
+  }
+
+  *start = initialize_state(block_count);
+  *goal = initialize_state(block_count);
+
+  if(!read_state(fptr, block_count, *start))
+    return 0;
+
   fscanf(fptr, "\n");
-  if(!read_state(fptr, block_count, goal)) return 0;
+
+  if(!read_state(fptr, block_count, *goal))
+    return 0;
+
+  fclose(fptr);
+  return 1;
 }
 
 // int main(){
 
-//   FILE *fptr = fopen("input.txt", "r");
-//   if(fptr == NULL){
-//     fprintf(stderr, "Input error\n");
+//   blocks start, goal;
+//   start = goal = NULL;
+//   if(!start_goal(&start, &goal)){
+//     fprintf(stderr, "Formating error. Can't read start or goal state.\n");\
+//     if(start != NULL) free_state(start);
+//     if(goal != NULL) free_state(goal);
 //     return 1;
 //   }
-
-//   int block_count;
-//   if(fscanf(fptr, "%d", &block_count) != 1){
-//     fprintf(stderr, "Formating error. Can't read block count.\n");
-//     return 1;
-//   }
-
-//   blocks start = initialize_state(block_count);
-//   blocks goal = initialize_state(block_count);
-//   if(!start_goal(fptr, block_count, start, goal)){
-//     fprintf(stderr, "Formating error. Can't read start or goal state.\n");
-//     free_state(start); free_state(goal);
-//     return 1;
-//   }
-
 
 //   printf("Start:\n");
 //   print_blocks(start);
@@ -135,6 +146,5 @@ int start_goal(FILE *fptr, int block_count, blocks start, blocks goal){
 
 //   free_state(start); free_state(goal);
 
-//   fclose(fptr);
 //   return 0;
 // }
