@@ -32,6 +32,7 @@ void free_pq(priority_queue pq){
   while(cur != NULL){
     node *temp = cur;
     cur = cur->next;
+    free_state(temp->data);
     free(temp);
   }
   free(pq);
