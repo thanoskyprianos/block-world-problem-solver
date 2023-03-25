@@ -48,7 +48,7 @@ int count(priority_queue pq) { /* count is now hidden */
 
 node *sorted_insert(blocks state, node *n) {
   node *new;
-  if (n == NULL || heuristic(state) <= heuristic(n->data)) { /* inserting by smallest value */
+  if (n == NULL || get_heuristic(state) <= get_heuristic(n->data)) { /* inserting by smallest value */
     new = malloc(sizeof *new);
     new->data = state;
     new->next = n;

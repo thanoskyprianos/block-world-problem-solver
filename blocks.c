@@ -56,11 +56,11 @@ void copy_state(blocks *dest, const blocks src){
   }
 }
 
-int heuristic(const blocks state){
+int get_heuristic(const blocks state){
   return state->heuristic;
 }
 
-int compare_states(const blocks state1, const blocks state2){
+int h(const blocks state1, const blocks state2){
   block *arr1 = state1->data;
   block *arr2 = state2->data;
 
@@ -181,7 +181,7 @@ void print_result(blocks state){
   }
 }
 
-void generate_next_states(blocks state, priority_queue pq, const blocks start, const blocks goal){
+void generate_next_states(blocks state, priority_queue pq, const blocks start, const blocks goal, int (*heuristic)(const blocks, const blocks)){
   block *arr = state->data;
 
   int len = state->index;
@@ -199,13 +199,13 @@ void generate_next_states(blocks state, priority_queue pq, const blocks start, c
           set_on_at("#", i, new_state);
 
         if(state->prev != NULL){
-          if(compare_states(new_state, state->prev) == 0){ /* if new_state results in previously generated state */
+          if(heuristic(new_state, state->prev) == 0){ /* if new_state results in previously generated state */
             free_state(new_state);
             continue;
           }
         }
         
-        int temp_heuristic = new_state->cost + compare_states(new_state, goal);
+        int temp_heuristic = new_state->cost + heuristic(new_state, goal);
         if(temp_heuristic < new_state->heuristic)
           new_state->heuristic = temp_heuristic;
 
@@ -222,13 +222,13 @@ void solve(const blocks start, const blocks goal){
   insert_node(start, pq);
   while(!is_empty(pq)){
     blocks cur_state = remove_node(pq);
-    if(compare_states(cur_state, goal) == 0){
+    if(h(cur_state, goal) == 0){
       printf("Solution steps:\n");
       print_result(cur_state);
       free_state(cur_state);
       break;
     }
-    generate_next_states(cur_state, pq, start, goal);
+    generate_next_states(cur_state, pq, start, goal, h);
     push(cur_state);
   }
 
@@ -239,6 +239,7 @@ void solve(const blocks start, const blocks goal){
 
 int blocks_world(char *file_name){
   blocks start, goal;
+  start = goal = NULL;
   if(!start_goal(&start, &goal, file_name)){
     fprintf(stderr, "Formating error. Can't read start or goal state.\n");
     if(start != NULL) free_state(start);
