@@ -1,5 +1,9 @@
 CC = gcc
 FLAGS = -Wall -Werror -pedantic -g3
+SIZE = 10
+
+run: main
+	time ./main ./test_inputs/n_$(SIZE).txt
 
 main: main.c blocks.o priority_queue.o stack.o
 	$(CC) $(FLAGS) -o main main.c blocks.o priority_queue.o stack.o

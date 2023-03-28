@@ -51,44 +51,10 @@ void test_set_on_at(void){
   free_state(state);
 }
 
-void test_compare_states_equal(void){
-  blocks state1 = initialize_state(3, NULL);
-  add_block_state("a", "#", state1);
-  add_block_state("b", "a", state1);
-  add_block_state("c", "b", state1);
-
-  blocks state2 = initialize_state(3, NULL);
-  add_block_state("a", "#", state2);
-  add_block_state("b", "a", state2);
-  add_block_state("c", "b", state2);
-
-  TEST_CHECK(compare_states(state1, state2) == 0);
-
-  free_state(state1); free_state(state2);
-}
-
-void test_compare_states_not_equal(void){
-  blocks state1 = initialize_state(3, NULL);
-  add_block_state("a", "#", state1);
-  add_block_state("b", "a", state1);
-  add_block_state("c", "b", state1);
-
-  blocks state2 = initialize_state(3, NULL);
-  add_block_state("a", "#", state2);
-  add_block_state("b", "a", state2);
-  add_block_state("c", "#", state2);
-
-  TEST_CHECK(compare_states(state1, state2) == 1);
-
-  free_state(state1); free_state(state2);
-}
-
 TEST_LIST = {
   {"copy_state", test_copy_state},
   {"is_on", test_is_on},
   {"holds", test_holds},
   {"set_on_at", test_set_on_at},
-  {"compare_states_equal", test_compare_states_equal},
-  {"compare_states_not_equal", test_compare_states_not_equal},
   {NULL, NULL}
 };

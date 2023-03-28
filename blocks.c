@@ -60,14 +60,29 @@ int get_heuristic(const blocks state){
   return state->heuristic;
 }
 
+char *holds_what(char *name, const blocks state){
+  block *arr = state->data;
+  for(int i = 0; i < state->index; i++)
+    if(strcmp(arr[i].on, name) == 0)
+      return arr[i].name;
+  return NULL;
+}
+
 int h(const blocks state1, const blocks state2){
   block *arr1 = state1->data;
   block *arr2 = state2->data;
 
   int cost = 0;
-  for(int i = 0; i < state1->index; i++)
-    if(strcmp(arr1[i].on, arr2[i].on) != 0) /* names are always on the same place so compare what they are on */
+  for(int i = 0; i < state1->index; i++){
+    if(strcmp(arr1[i].on, arr2[i].on) != 0)
       cost++;
+
+    char *hold1 = holds_what(arr1[i].name, state1);
+    char *hold2 = holds_what(arr1[i].name, state2);
+
+    if(hold1 != NULL && hold2 != NULL && strcmp(hold1, hold2) != 0)
+      cost++;
+  }
 
   return cost;
 }
@@ -208,6 +223,8 @@ void generate_next_states(blocks state, priority_queue pq, const blocks start, c
         int temp_heuristic = new_state->cost + heuristic(new_state, goal);
         if(temp_heuristic < new_state->heuristic)
           new_state->heuristic = temp_heuristic;
+
+        new_state->cost = state->cost + 1;
 
         insert_node(new_state, pq);
       }
