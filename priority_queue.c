@@ -65,14 +65,6 @@ void insert_node(blocks state, priority_queue pq) {
   pq->items = sorted_insert(state, pq->items);
 }
 
-void print_pq(priority_queue pq){
-  node *cur = pq->items;
-  while(cur != NULL){
-    print_blocks(cur->data);
-    cur = cur->next;
-  }
-}
-
 blocks remove_node(priority_queue pq){
   node *temp = NULL;
   blocks state = NULL;

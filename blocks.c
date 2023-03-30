@@ -74,13 +74,13 @@ int h(const blocks state1, const blocks state2){
 
   int cost = 0;
   for(int i = 0; i < state1->index; i++){
-    if(strcmp(arr1[i].on, arr2[i].on) != 0)
+    if(strcmp(arr1[i].on, arr2[i].on) != 0) /* not on same block */
       cost++;
 
     char *hold1 = holds_what(arr1[i].name, state1);
     char *hold2 = holds_what(arr1[i].name, state2);
 
-    if(hold1 != NULL && hold2 != NULL && strcmp(hold1, hold2) != 0)
+    if(hold1 != NULL && hold2 != NULL && strcmp(hold1, hold2) != 0) /* not holding same block */
       cost++;
   }
 
@@ -126,6 +126,7 @@ void set_on_at(char *on, int pos, const blocks state){
   memcpy(arr[pos].on, on, len + 1);
 }
 
+/* recursive function that prints states as mentioned in README file */
 void preety_print(blocks state, char *table){
   block *arr = state->data;
   for(int i = 0; i < state->index; i++){
@@ -144,6 +145,7 @@ void print_blocks(blocks state){
   preety_print(state, "#");
 }
 
+/* called by start_goal */
 int read_state(FILE *fptr, int block_count, blocks state){
   for(int i = 0; i < block_count; i++){
     char name[64];
@@ -160,6 +162,7 @@ int read_state(FILE *fptr, int block_count, blocks state){
   return 1;
 }
 
+/* read start and goal states from input file*/
 int start_goal(blocks *start, blocks *goal, char *file_name){
   FILE *fptr = fopen(file_name, "r");
   if(fptr == NULL){
@@ -188,6 +191,7 @@ int start_goal(blocks *start, blocks *goal, char *file_name){
   return 1;
 }
 
+/* recursively print previous states of resulting state */
 void print_result(blocks state){
   if(state != NULL){
     print_result(state->prev);
@@ -210,7 +214,7 @@ void generate_next_states(blocks state, priority_queue pq, const blocks start, c
         
         if(j != i && !holds(arr[j].name, state))
           set_on_at(arr[j].name, i, new_state);
-        else if(!is_on(arr[i].name, "#", state)) /* if it's not on table, move it there for first state */
+        else if(!is_on(arr[i].name, "#", state)) /* if it's not on table, move it there */
           set_on_at("#", i, new_state);
 
         if(state->prev != NULL){
