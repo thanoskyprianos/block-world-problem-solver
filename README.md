@@ -42,7 +42,7 @@ To understand the A* algorithm I used the following sources: [Video 1](https://y
 
 
 ## Notes <a name="notes"></a>
-* To program prints the states using a recursive function in a specific format. For example, the state:
+* The program prints the states using a recursive function in a specific format. For example, the state:
 ```
 A B
 B C
