@@ -1,4 +1,4 @@
-# Question9 : Blocks world problem
+Block world problem
 
 ## Table of Contents
 * [How the program works](#how)
